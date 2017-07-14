@@ -1,9 +1,9 @@
 python ./run.py \
--d ../Desktop/CopeData/ \
--a ../Desktop/CopeData \
--o ./Desktop/Result \
+-d ../CopeData/ \
+-a ../CopeData \
+-o ./Result \
 -e 200 \
--p ../Desktop/glove.6B/glove.6B.200d.txt \
+-p ../glove.6B/glove.6B.200d.txt \
 -u 10 \
 -v 100 \
 -g True

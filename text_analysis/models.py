@@ -118,8 +118,7 @@ class CNN_module():
         item_weight = np.random.permutation(item_weight)
 
         print("Train...CNN module")
-        history = self.model.fit({'model_input': X_train, 'model_output': V},
-                                 verbose=0, batch_size=self.batch_size, nb_epoch=self.nb_epoch, sample_weight={'model_output': item_weight})
+        history = self.model.fit(x=X_train,y=V,verbose=0, batch_size=self.batch_size, epochs=self.nb_epoch, sample_weight=item_weight)
 
         # cnn_loss_his = history.history['loss']
         # cmp_cnn_loss = sorted(cnn_loss_his)[::-1]
@@ -129,6 +128,5 @@ class CNN_module():
 
     def get_projection_layer(self, X_train):
         X_train = sequence.pad_sequences(X_train, maxlen=self.max_len)
-        Y = self.model.predict(
-            {'model_input': X_train}, batch_size=len(X_train))['model_output']
+        Y = self.model.predict(X_train, batch_size=len(X_train))
         return Y
