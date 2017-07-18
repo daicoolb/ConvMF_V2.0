@@ -16,6 +16,8 @@ parser.add_argument("-r", "--raw_rating_data_path", type=str,
                     help="Path to raw rating data. data format - user id::item id::rating")
 parser.add_argument("-i", "--raw_item_document_data_path", type=str,
                     help="Path to raw item document data. item document consists of multiple text. data format - item id::text1|text2...")
+parser.add_argument("-b", "--raw_user_side_information_data_path",type=str,
+                    help="Path to raw user side information, side information consists of binary value data format - user_id::binary value...")
 parser.add_argument("-m", "--min_rating", type=int,
                     help="Users who have less than \"min_rating\" ratings will be removed (default = 1)", default=1)
 parser.add_argument("-l", "--max_length_document", type=int,
@@ -66,6 +68,7 @@ data_factory = Data_Factory()
 if do_preprocess:
     path_rating = args.raw_rating_data_path
     path_itemtext = args.raw_item_document_data_path
+    path_userside = args.raw_user_side_information_data_path
     min_rating = args.min_rating
     max_length = args.max_length_document
     max_df = args.max_df
@@ -77,12 +80,13 @@ if do_preprocess:
     print "\tsaving preprocessed data path - %s" % data_path
     print "\trating data path - %s" % path_rating
     print "\tdocument data path - %s" % path_itemtext
+    print "\tuser side information data path - %s" % path_userside
     print "\tmin_rating: %d\n\tmax_length_document: %d\n\tmax_df: %.1f\n\tvocab_size: %d\n\tsplit_ratio: %.1f" \
         % (min_rating, max_length, max_df, vocab_size, split_ratio)
     print "==========================================================================================="
 
     R, D_all = data_factory.preprocess(
-        path_rating, path_itemtext, min_rating, max_length, max_df, vocab_size)
+        path_rating, path_itemtext, path_userside, min_rating, max_length, max_df, vocab_size)
     data_factory.save(aux_path, R, D_all)
     data_factory.generate_train_valid_test_file_from_R(
         data_path, R, split_ratio)

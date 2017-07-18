@@ -299,7 +299,7 @@ class Data_Factory():
         f_text.write("\n".join(formatted_text))
         f_text.close()
 
-    def preprocess(self, path_rating, path_itemtext, min_rating,
+    def preprocess(self, path_rating, path_itemtext, path_userside, min_rating,
                    _max_length, _max_df, _vocab_size):
         '''
         Preprocess rating and document data.
@@ -307,6 +307,7 @@ class Data_Factory():
         Input:
             - path_rating: path for rating data (data format - user_id::item_id::rating)
             - path_itemtext: path for review or synopsis data (data format - item_id::text1|text2|text3|....)
+            - path_userside: path for user side information (data format - user_id::binary value...)
             - min_rating: users who have less than "min_rating" ratings will be removed (default = 1)
             - _max_length: maximum length of document of each item (default = 300)
             - _max_df: terms will be ignored that have a document frequency higher than the given threshold (default = 0.5)
@@ -331,6 +332,11 @@ class Data_Factory():
         else:
             print "Path(item text) is wrong!"
             sys.exit()
+
+        if os.path.isfile(path_userside):
+            print "Path - user side information:%s" % path_userside
+        else:
+            print "Path(user side) is wrong!"
 
         # 1st scan document file to filter items which have documents
         tmp_id_plot = set()
@@ -407,6 +413,17 @@ class Data_Factory():
         R = csr_matrix((rating, (user, item)))
 
         print "Finish preprocessing rating data - # user: %d, # item: %d, # ratings: %d" % (R.shape[0], R.shape[1], R.nnz)
+        
+        # 1st scan user side information according to indices of users in user_side_information.dat
+        user_side=[]
+        raw_side=open(path_userside,'r')
+        all_line=raw_side.read().splitlines()
+        for lines in all_line:
+            tmp=line.split('::')
+            if tmp_user[tmp[0]]>=min_rating:
+                user_side.append(tmp[1])        
+        raw_side.close()
+        print "Valid User side information - # user: %d" % len(user_side)
 
         # 2nd scan document file to make idx2plot dictionary according to
         # indices of items in rating matrix

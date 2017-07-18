@@ -1,7 +1,8 @@
 python ./run.py \
--d ./test/ml-10m/0.2/ \
--a ./test/ml-10m/ \
+-d ~/Desktop/CopeData/test_0717/ \
+-a ~/Desktop/CopeData/test_0717/ \
 -c True \
--r ./data/movielens/ml-10m_ratings.dat \
--i ./data/movielens/Plot.idmap \
+-r ~/Desktop/RawData/ml-1m_ratings.dat \
+-i ~/Desktop/RawData/ml_plot.dat \
+-b ~/Desktop/RawData/user_side_information.dat \
 -m 1

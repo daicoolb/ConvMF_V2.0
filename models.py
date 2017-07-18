@@ -11,6 +11,7 @@ from util import eval_RMSE
 import math
 import numpy as np
 from text_analysis.models import CNN_module
+from text_analysis.aSDAE import aSDAE_module
 
 
 def ConvMF(res_dir, train_user, train_item, valid_user, test_user,
