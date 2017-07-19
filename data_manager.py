@@ -24,9 +24,11 @@ class Data_Factory():
         print "Load preprocessed rating data - %s" % (path + "/ratings.all")
         D_all = pickl.load(open(path + "/document.all", "rb"))
         print "Load preprocessed document data - %s" % (path + "/document.all")
-        return R, D_all
+        S = pickl.load(open(path + "/side.all","rb"))
+        print "Load Preprocessed user side information - %s" % (path + "/side.all")
+        return R, D_all, S
 
-    def save(self, path, R, D_all):
+    def save(self, path, R, D_all, S):
         if not os.path.exists(path):
             os.makedirs(path)
         print "Saving preprocessed rating data - %s" % (path + "/ratings.all")
@@ -34,6 +36,9 @@ class Data_Factory():
         print "Done!"
         print "Saving preprocessed document data - %s" % (path + "/document.all")
         pickl.dump(D_all, open(path + "/document.all", "wb"))
+        print "Done!"
+        print "Saving preprocessed user side information -%s" %(path + "/side.all")
+        pickl.dump(S,open(path + "/side.all","wb"))
         print "Done!"
 
     def read_rating(self, path):
@@ -317,6 +322,7 @@ class Data_Factory():
             - R: rating matrix (csr_matrix: row - user, column - item)
             - D_all['X_sequence']: list of sequence of word index of each item ([[1,2,3,4,..],[2,3,4,...],...])
             - D_all['X_vocab']: list of tuple (word, index) in the given corpus
+            - S: user side information (binary side information per row)
         '''
         # Validate data paths
         if os.path.isfile(path_rating):
@@ -420,10 +426,15 @@ class Data_Factory():
         all_line=raw_side.read().splitlines()
         for lines in all_line:
             tmp=line.split('::')
+            tmp_list=[]
             if tmp_user[tmp[0]]>=min_rating:
-                user_side.append(tmp[1])        
+                for i in xrange(len(tmp[1])):
+                    tmp_list.append(int(tmp[1][i]))
+                user_side.append(tmp_list)
         raw_side.close()
+        S=csr_matrix(user_side)
         print "Valid User side information - # user: %d" % len(user_side)
+        print "Finish preprocessing user side information"
 
         # 2nd scan document file to make idx2plot dictionary according to
         # indices of items in rating matrix
@@ -471,4 +482,4 @@ class Data_Factory():
 
         print "Finish preprocessing document data!"
 
-        return R, D_all
+        return R, D_all, S

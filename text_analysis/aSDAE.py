@@ -65,7 +65,7 @@ class aSDAE_module():
         
         print("Train... aSDAE model")
         self.model.compile(optimizer='rmsprop',loss={'output_model_rating':'mse','output_model_side':'mse','user_matrix':'mse'},loss_weights=[1,1,1])
-        history=self.model.fit({'user_rating':aSDAE,'user_sideinformation':train_user},{'output_model_rating':aSDAE,'output_model_side':train_user,'user_matrix':U},batch_size=self.batch_size,epochs=self.epochs)
+        history=self.model.fit({'user_rating':aSDAE,'user_sideinformation':train_user},{'output_model_rating':aSDAE,'output_model_side':train_user,'user_matrix':U},verbose=0,batch_size=self.batch_size,epochs=self.epochs)
     
         return history
 

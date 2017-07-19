@@ -85,9 +85,9 @@ if do_preprocess:
         % (min_rating, max_length, max_df, vocab_size, split_ratio)
     print "==========================================================================================="
 
-    R, D_all = data_factory.preprocess(
+    R, D_all, S = data_factory.preprocess(
         path_rating, path_itemtext, path_userside, min_rating, max_length, max_df, vocab_size)
-    data_factory.save(aux_path, R, D_all)
+    data_factory.save(aux_path, R, D_all, S)
     data_factory.generate_train_valid_test_file_from_R(
         data_path, R, split_ratio)
 else:
@@ -117,11 +117,11 @@ else:
         % (dimension, lambda_u, lambda_v, max_iter, num_kernel_per_ws)
     print "==========================================================================================="
 
-    R, D_all = data_factory.load(aux_path)
+    R, D_all, S = data_factory.load(aux_path)
     CNN_X = D_all['X_sequence']
     vocab_size = len(D_all['X_vocab']) + 1
 
-    from models import ConvMF
+    from models import PHDMF
 
     if pretrain_w2v is None:
         init_W = None
@@ -134,6 +134,6 @@ else:
     valid_user = data_factory.read_rating(data_path + '/valid_user.dat')
     test_user = data_factory.read_rating(data_path + '/test_user.dat')
 
-    ConvMF(max_iter=max_iter, res_dir=res_dir,
-           lambda_u=lambda_u, lambda_v=lambda_v, dimension=dimension, vocab_size=vocab_size, init_W=init_W, give_item_weight=give_item_weight, CNN_X=CNN_X, emb_dim=emb_dim, num_kernel_per_ws=num_kernel_per_ws,
+    PHDMF(max_iter=max_iter, res_dir=res_dir,
+           lambda_u=lambda_u, lambda_v=lambda_v, dimension=dimension, vocab_size=vocab_size, init_W=init_W, give_item_weight=give_item_weight, CNN_X=CNN_X, aSDAE=S, emb_dim=emb_dim, num_kernel_per_ws=num_kernel_per_ws,
            train_user=train_user, train_item=train_item, valid_user=valid_user, test_user=test_user, R=R)

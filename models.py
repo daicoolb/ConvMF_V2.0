@@ -14,14 +14,16 @@ from text_analysis.models import CNN_module
 from text_analysis.aSDAE import aSDAE_module
 
 
-def ConvMF(res_dir, train_user, train_item, valid_user, test_user,
-           R, CNN_X, vocab_size, init_W=None, give_item_weight=True,
+def PHDMF(res_dir, train_user, train_item, valid_user, test_user,
+           R, CNN_X, aSDAE, vocab_size, init_W=None, give_item_weight=True,
            max_iter=50, lambda_u=1, lambda_v=100, dimension=50,
            dropout_rate=0.2, emb_dim=200, max_len=300, num_kernel_per_ws=100):
     # explicit setting
     a = 1
     b = 0
-
+    aSDAE_encoder_dimension=100
+    user_feature=42
+ 
     num_user = R.shape[0]
     num_item = R.shape[1]
     PREV_LOSS = 1e-50
@@ -43,11 +45,13 @@ def ConvMF(res_dir, train_user, train_item, valid_user, test_user,
 
     pre_val_eval = 1e10
 
-    cnn_module = CNN_module(dimension, vocab_size, dropout_rate,
-                            emb_dim, max_len, num_kernel_per_ws, init_W)
+    cnn_module = CNN_module(dimension, vocab_size, dropout_rate,emb_dim, max_len, num_kernel_per_ws, init_W)
     theta = cnn_module.get_projection_layer(CNN_X)
-    np.random.seed(133)
-    U = np.random.uniform(size=(num_user, dimension))
+    asdae_module = aSDAE_module(aSDAE_encoder_dimension,dimension,num_item,user_feature)
+    alpha = asdae_module.get_middle_layer(R.toarray(),aSDAE)  
+    #np.random.seed(133)
+    #U = np.random.uniform(size=(num_user, dimension))
+    U = alpha
     V = theta
 
     endure_count = 5
@@ -58,20 +62,24 @@ def ConvMF(res_dir, train_user, train_item, valid_user, test_user,
         print "%d iteration\t(patience: %d)" % (iteration, count)
 
         VV = b * (V.T.dot(V)) + lambda_u * np.eye(dimension)
-        sub_loss = np.zeros(num_user)
+        #sub_loss = np.zeros(num_user)
 
         for i in xrange(num_user):
             idx_item = train_user[0][i]
             V_i = V[idx_item]
             R_i = Train_R_I[i]
             A = VV + (a - b) * (V_i.T.dot(V_i))
-            B = (a * V_i * (np.tile(R_i, (dimension, 1)).T)).sum(0)
+            B = (a * V_i * (np.tile(R_i, (dimension, 1)).T)).sum(0) + lambda_u * aphla[i]
 
             U[i] = np.linalg.solve(A, B)
 
-            sub_loss[i] = -0.5 * lambda_u * np.dot(U[i], U[i])
+            #sub_loss[i] = -0.5 * lambda_u * np.dot(U[i], U[i])
 
-        loss = loss + np.sum(sub_loss)
+        #loss = loss + np.sum(sub_loss)
+        asdae_seed = np.random.randint(100000)
+        asdae_history = asdae_module.train(aSDAE,R.toarray(),U,asdae_seed)
+        alpha = asdae_module.get_middle_layer(R.toarray(),aSDAE)
+        loss = loss - 0.5 * lambda_u * asdae_history.history['loss'][-1]
 
         sub_loss = np.zeros(num_item)
         UU = b * (U.T.dot(U))
@@ -112,6 +120,7 @@ def ConvMF(res_dir, train_user, train_item, valid_user, test_user,
             np.savetxt(res_dir + '/U.dat', U)
             np.savetxt(res_dir + '/V.dat', V)
             np.savetxt(res_dir + '/theta.dat', theta)
+            np.savetxt(res_dir + '/alpha.dat', alpha)
         else:
             count = count + 1
 
