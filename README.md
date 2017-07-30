@@ -1,4 +1,4 @@
-# MF_Beili
+# ConvMF_V2.0
 
 This is a updation of [ConvMF](http://dm.postech.ac.kr/~cartopy/ConvMF/)
 
