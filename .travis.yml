@@ -10,4 +10,4 @@ install:
   - pip install -tox
   
 script:
-  - python Test.py
+  - tox
