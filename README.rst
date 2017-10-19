@@ -1,7 +1,7 @@
 # ConvMF_V2.0
 
 |Build Status|
-.. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
+|Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
    :target: https://travis-ci.org/django-wiki/django-wiki
 
 This is an updation of [ConvMF](http://dm.postech.ac.kr/~cartopy/ConvMF/)
