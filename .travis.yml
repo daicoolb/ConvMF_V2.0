@@ -10,4 +10,4 @@ install:
   - pip install -tox
   
 script:
-  - python setup.py -q install
+  - python Test.py
