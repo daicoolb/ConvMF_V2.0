@@ -10,4 +10,4 @@ install:
   - pip install tox\>=2.1 tox-travis codecov
   
 script:
-  - tox
+  - python Test.py
