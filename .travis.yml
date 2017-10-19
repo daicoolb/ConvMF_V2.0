@@ -7,7 +7,7 @@ env:
   - LINT="yes"
   
 install:
-  - pip install -tox
+  - pip install tox\>=2.1 tox-travis codecov
   
 script:
   - tox
