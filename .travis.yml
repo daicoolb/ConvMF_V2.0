@@ -8,3 +8,6 @@ env:
   
 install:
   - pip install -tox
+  
+script:
+  - pytest
