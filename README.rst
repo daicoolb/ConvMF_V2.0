@@ -1,6 +1,7 @@
-# ConvMF_V2.0
+ConvMF_V2.0
+-----------
 
-..image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
+.. image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
    :target: https://travis-ci.org/django-wiki/django-wiki
 
 This is an updation of [ConvMF](http://dm.postech.ac.kr/~cartopy/ConvMF/)
