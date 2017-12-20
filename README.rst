@@ -1,7 +1,11 @@
 ConvMF_V2.0
 -----------
 
-.. image:: https://jaywcjlove.github.io/sb/ico/awesome.svg  .. image:: https://jaywcjlove.github.io/sb/license/mit.svg .. image:: https://travis-ci.org/daicoolb/ConvMF_V2.0.svg?branch=master
+.. image:: https://jaywcjlove.github.io/sb/ico/awesome.svg  
+
+.. image:: https://jaywcjlove.github.io/sb/license/mit.svg 
+
+.. image:: https://travis-ci.org/daicoolb/ConvMF_V2.0.svg?branch=master
    :target: https://travis-ci.org/daicoolb/ConvMF_V2.0
 
 This is an updation of `ConvMF`_
