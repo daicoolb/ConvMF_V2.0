@@ -19,7 +19,7 @@ Parameter | Default
 `-c <bool>`, `--do_preprocess <bool>` | `False`
 `-r <path>`, `--raw_rating_data_path <path>` | {}
 `-i <path>`, `--raw_item_document_data_path <path>`| {}
-`-b <path>`, `--raw_user_side_information_data_path`| {}
+`-b <path>`, `--raw_user_side_information_data_path <path>`| {}
 `-m <integer>`, `--min_rating <integer>` | {}
 `-l <integer>`, `--max_length_document <integer>` | 300
 `-f <float>`, `--max_df <float>` | 0.5
@@ -55,7 +55,8 @@ Parameter | Default
 16. `lambda_v`: parameter of item regularizer.
 17. `max_iter`: the maximum number of iteration.
 18. `num_kernel_per_ws`: the number of kernels per window size for CNN module.
-
+19. `raw_user_side_information_data_path` path to a raw user side information path. the data format should be `user id:: binaryvector`
+20. `raw_item_document_data_path` path to a raw item side information path. the data format should be `item id:: review1 | review2 | review3 ...`
 
 If you have any question, don't hestitate to contact with me.
 
