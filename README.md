@@ -19,6 +19,7 @@ Parameter | Default
 `-c <bool>`, `--do_preprocess <bool>` | `False`
 `-r <path>`, `--raw_rating_data_path <path>` | {}
 `-i <path>`, `--raw_item_document_data_path <path>`| {}
+`-b <path>`, `--raw_user_side_information_data_path`| {}
 `-m <integer>`, `--min_rating <integer>` | {}
 `-l <integer>`, `--max_length_document <integer>` | 300
 `-f <float>`, `--max_df <float>` | 0.5
